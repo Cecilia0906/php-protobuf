@@ -173,11 +173,11 @@ int writer_write_string(writer_t *writer, uint64_t field_number, const char *str
 	return 0;
 }
 
-int writer_write_packed_double(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_double(writer_t *writer, uint64_t field_number, zval *values)
 {
 	fixed64_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -191,8 +191,8 @@ int writer_write_packed_double(writer_t *writer, uint32_t field_number, zval *va
 	writer_init_ex(&packed_writer, WRITER_64BIT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val.d_val = Z_DVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.d_val = Z_DVAL_P(value);
 		write_fixed64(&packed_writer, val);
 	}
 
@@ -203,11 +203,11 @@ int writer_write_packed_double(writer_t *writer, uint32_t field_number, zval *va
 	return ret;
 }
 
-int writer_write_packed_fixed32(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_fixed32(writer_t *writer, uint64_t field_number, zval *values)
 {
 	fixed32_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -221,8 +221,8 @@ int writer_write_packed_fixed32(writer_t *writer, uint32_t field_number, zval *v
 	writer_init_ex(&packed_writer, WRITER_32BIT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val.i_val = Z_LVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.i_val = (int32_t)Z_LVAL_P(value);
 		write_fixed32(&packed_writer, val);
 	}
 
@@ -233,11 +233,11 @@ int writer_write_packed_fixed32(writer_t *writer, uint32_t field_number, zval *v
 	return ret;
 }
 
-int writer_write_packed_fixed64(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_fixed64(writer_t *writer, uint64_t field_number, zval *values)
 {
 	fixed64_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -251,8 +251,8 @@ int writer_write_packed_fixed64(writer_t *writer, uint32_t field_number, zval *v
 	writer_init_ex(&packed_writer, WRITER_64BIT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val.i_val = Z_LVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.i_val = Z_LVAL_P(value);
 		write_fixed64(&packed_writer, val);
 	}
 
@@ -263,11 +263,11 @@ int writer_write_packed_fixed64(writer_t *writer, uint32_t field_number, zval *v
 	return ret;
 }
 
-int writer_write_packed_float(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_float(writer_t *writer, uint64_t field_number, zval *values)
 {
 	fixed32_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -281,8 +281,8 @@ int writer_write_packed_float(writer_t *writer, uint32_t field_number, zval *val
 	writer_init_ex(&packed_writer, WRITER_32BIT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val.f_val = Z_DVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.f_val = Z_DVAL_P(value);
 		write_fixed32(&packed_writer, val);
 	}
 
@@ -293,11 +293,11 @@ int writer_write_packed_float(writer_t *writer, uint32_t field_number, zval *val
 	return ret;
 }
 
-int writer_write_packed_int(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_int(writer_t *writer, uint64_t field_number, zval *values)
 {
 	int64_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -311,8 +311,8 @@ int writer_write_packed_int(writer_t *writer, uint32_t field_number, zval *value
 	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val = Z_LVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val = Z_LVAL_P(value);
 		writer_write_varint(&packed_writer, val);
 	}
 
@@ -323,11 +323,11 @@ int writer_write_packed_int(writer_t *writer, uint32_t field_number, zval *value
 	return ret;
 }
 
-int writer_write_packed_signed_int(writer_t *writer, uint32_t field_number, zval *values)
+int writer_write_packed_bool(writer_t *writer, uint64_t field_number, zval *values)
 {
 	int64_t val;
 	HashPosition i;
-	zval **value;
+	zval *value;
 	writer_t packed_writer;
 	int ret, num;
 	size_t pack_size;
@@ -341,8 +341,42 @@ int writer_write_packed_signed_int(writer_t *writer, uint32_t field_number, zval
 	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
 
 	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
-		zend_hash_get_current_data_ex(Z_ARRVAL_P(values), (void **) &value, &i);
-		val = Z_LVAL_PP(value);
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		if (Z_TYPE_P(value) == IS_TRUE) {
+			val = 1;
+		} else {
+			val = 0;
+		}
+		writer_write_varint(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_signed_int(writer_t *writer, uint64_t field_number, zval *values)
+{
+	int64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val = Z_LVAL_P(value);
 		zigzag_encode(&val);
 		writer_write_varint(&packed_writer, val);
 	}
