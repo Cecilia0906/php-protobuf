@@ -1,13 +1,19 @@
 {
-  "name": "allegro/protobuf",
-  "description": "Protocol buffer support for PHP",
+  "name": "basho/protobuf",
+  "description": "Protocol Buffer extension for PHP",
   "type": "library",
   "keywords": [
     "protocol buffers",
     "data",
-    "pb"
+    "pb",
+    "serialization",
+    "proto",
+    "protobuf",
+    "allegro",
+    "basho"
   ],
   "homepage": "https://github.com/allegro/php-protobuf",
+  "license": "Apache-2.0",
   "bin": ["bin/protoc"],
   "autoload": {
     "psr-0": {
@@ -15,6 +21,12 @@
     }
   },
   "authors": [
+    {
+      "name": "Christopher Mancini",
+      "email": "cmancini@basho.com",
+      "homepage": "https://github.com/christophermancini",
+      "role": "Author"
+    },
     {
       "name": "Hubert Jagodziński",
       "email": "hubert.jagodzinski@allegro.pl",
@@ -29,9 +41,12 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/allegro/php-protobuf/issues"
+    "issues": "https://github.com/basho/php-protobuf/issues"
   },
   "require": {
-    "php": ">=5.3"
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
   }
 }
