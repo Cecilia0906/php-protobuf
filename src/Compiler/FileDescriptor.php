@@ -1,4 +1,7 @@
 <?php
+
+namespace Basho\Protobuf\Compiler;
+
 /**
  * Describes file
  */

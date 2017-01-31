@@ -238,3 +238,13 @@ References
 
 [1]: http://code.google.com/p/protobuf/ "Protocol Buffers"
 [2]: http://php.net/manual/en/install.pecl.phpize.php
+
+## Running Tests
+
+Run protoc binary using non-installed extension.
+
+`php bin/protoc -n -d extension_dir=./modules/ -d extension=protobuf.so ../riak-phppb-client/riak_pb/src/riak.proto`
+
+Run PHP tests against non-installed extension.
+
+`php run-tests.php -n -d extension_dir=./modules/ -d extension=protobuf.so --show-diff --set-timeout 120`

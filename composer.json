@@ -8,11 +8,12 @@
     "pb"
   ],
   "homepage": "https://github.com/allegro/php-protobuf",
-  "bin": ["bin/protoc"],
+  "bin": ["bin/protoc-gen-php"],
   "autoload": {
     "psr-0": {
         "": "stubs"
-    }
+    },
+    "psr-4": {"Basho\\Protobuf\\": "src/"}
   },
   "authors": [
     {
@@ -32,6 +33,10 @@
     "issues": "https://github.com/allegro/php-protobuf/issues"
   },
   "require": {
-    "php": ">=5.3"
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.7.*",
+    "google/protobuf": "v2.6.1"
   }
 }

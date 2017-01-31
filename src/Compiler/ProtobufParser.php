@@ -1,13 +1,6 @@
 <?php
-require_once 'DescriptorInterface.php';
-require_once 'MessageDescriptor.php';
-require_once 'FileDescriptor.php';
-require_once 'FieldDescriptor.php';
-require_once 'FieldLabel.php';
-require_once 'EnumDescriptor.php';
-require_once 'EnumValueDescriptor.php';
-require_once 'CodeStringBuffer.php';
-require_once 'CommentStringBuffer.php';
+
+namespace Basho\Protobuf\Compiler;
 
 /**
  * Parses protobuf file and generates message class

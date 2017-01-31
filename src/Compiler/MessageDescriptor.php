@@ -1,4 +1,7 @@
 <?php
+
+namespace Basho\Protobuf\Compiler;
+
 /**
  * MessageDescriptor encapsulates protobuf message description
  */

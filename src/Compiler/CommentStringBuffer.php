@@ -1,4 +1,7 @@
 <?php
+
+namespace Basho\Protobuf\Compiler;
+
 /**
  * Helper class for generating source code comments
  */
