@@ -45,10 +45,30 @@
     "issues": "https://github.com/basho/php-protobuf/issues"
   },
   "require": {
-    "php": ">=5.4"
+    "php": ">=7.0"
   },
   "require-dev": {
     "phpunit/phpunit": "5.7.*",
     "google/protobuf": "v2.6.1"
+  },
+  "scripts": {
+    "build": [
+      "phpize",
+      "./configure",
+      "make"
+    ],
+    "clean": "make distclean",
+    "phpt": "TRAVIS=1 php run-tests.php -n -d extension_dir=./modules/ -d extension=protobuf.so --show-diff --set-timeout 120",
+    "test": [
+      "@test-extension",
+      "@test-generator"
+    ],
+    "test-extension": [
+      "@build",
+      "TRAVIS=1 make test"
+    ],
+    "test-generator": [
+      "./vendor/bin/phpunit"
+    ]
   }
 }

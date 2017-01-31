@@ -7,11 +7,7 @@ use Basho\Protobuf\Compiler\ProtobufParser;
 
 if (!debug_backtrace()) {
     if (!class_exists('\ProtobufMessage')) {
-
-        echo $argv[0] .
-            ' requires protobuf extension installed to run' .
-            PHP_EOL;
-
+        echo $argv[0] . ' requires protobuf extension installed to run' . PHP_EOL;
         exit(1);
     }
 
