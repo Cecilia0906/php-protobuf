@@ -65,7 +65,7 @@
     ],
     "test-extension": [
       "@build",
-      "TRAVIS=1 make test"
+      "@phpt"
     ],
     "test-generator": [
       "./vendor/bin/phpunit"
