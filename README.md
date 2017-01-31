@@ -1,107 +1,105 @@
-PHP Protobuf - Google's Protocol Buffers for PHP
-================================================
+# PHP Protobuf - Google's Protocol Buffers for PHP
 
-Overview
---------
+[![Packagist](https://img.shields.io/packagist/v/basho/php-protobuf.svg?maxAge=2592000)](https://packagist.org/packages/basho/php-protobuf) [![Build Status](https://secure.travis-ci.org/basho/php-protobuf.png?branch=master)](http://travis-ci.org/basho/php-protobuf)
 
 [Protocol Buffers][1] are a way of encoding structured data in an efficient yet extensible format. It might be used in file formats and RPC protocols.
 
 PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to provide high performance, including a `protoc` plugin to generate PHP classes from .proto files. The heavy-lifting (a parsing and a serialization) is done by a PHP extension.
 
-### Requirements
-* PHP 7.0 or above
-* Pear's Console_CommandLine (for the protoc plugin)
-* Google's protoc compiler version 2.6 or above
+1. [Installation](#installation)
+1. [Documentation](#documentation)
+1. [Contributing](#contributing)
+1. [Roadmap](#roadmap)
+1. [License and Authors](#license-and-authors)
+1. [References](#references)
 
-## Getting started
+## Installation
 
-### Installation
+### Dependencies
+
+* PHP 5.4 or above
+* Protobuf `protoc` compiler 2.6 or above
+* Protobuf message version `proto2`
+
+### Composer Install
+
+### Install From Source
+
 1. Clone the source code
-
-    ```
-    git clone https://github.com/allegro/php-protobuf
-    ```
+```
+git clone https://github.com/allegro/php-protobuf
+```
 1. Go to the source code directory
-
-    ```
-    cd php-protobuf
-    ```
+```
+cd php-protobuf
+```
 1. Build and install the PHP extension (follow instructions at [php.net][2])
-
 1. Install protoc plugin dependencies
+```
+composer install
+```
 
-    ```
-    composer install
-    ```
-
-### Usage
+## Documentation
 
 1. Assume you have a file `foo.proto`
-    ```
-    message Foo
-    {
-        required int32 bar = 1;
-        optional string baz = 2;
-        repeated float spam = 3;
-    }
-    ```
+```
+message Foo
+{
+    required int32 bar = 1;
+    optional string baz = 2;
+    repeated float spam = 3;
+}
+```
 
 1. Compile `foo.proto`
-    ```
-    php protoc-gen-php.php foo.proto
-    ```
+```
+php protoc-gen-php.php foo.proto
+```
 
 1. Create `Foo` message and populate it with some data
-    ```php
-    require_once 'Foo.php';
+```php
+require_once 'Foo.php';
 
-    $foo = new Foo();
-    $foo->setBar(1);
-    $foo->setBaz('two');
-    $foo->appendSpam(3.0);
-    $foo->appendSpam(4.0);
-    ```
+$foo = new Foo();
+$foo->setBar(1);
+$foo->setBaz('two');
+$foo->appendSpam(3.0);
+$foo->appendSpam(4.0);
+```
 
 1. Serialize a message to a string
-    ```php
-    $packed = $foo->serializeToString();
-    ```
+```php
+$packed = $foo->serializeToString();
+```
 
 1. Parse a message from a string
-    ```php
-    $parsedFoo = new Foo();
-    try {
-        $parsedFoo->parseFromString($packed);
-    } catch (Exception $ex) {
-        die('Oops.. there is a bug in this example, ' . $ex->getMessage());
-    }
-    ```
+```php
+$parsedFoo = new Foo();
+try {
+    $parsedFoo->parseFromString($packed);
+} catch (Exception $ex) {
+    die('Oops.. there is a bug in this example, ' . $ex->getMessage());
+}
+```
 
 1. Let's see what we parsed out
+```php
+$parsedFoo->dump();
 
-    ```php
-    $parsedFoo->dump();
-    ```
-
-    It should produce output similar to the following:
-    ```
-    Foo {
-      1: bar => 1
-      2: baz => 'two'
-      3: spam(2) =>
-        [0] => 3
-        [1] => 4
-    }
-    ```
+// OUTPUT
+Foo {
+    1: bar => 1
+    2: baz => 'two'
+    3: spam(2) =>
+    [0] => 3
+    [1] => 4
+}
+```
 
 1. If you would like you can reset an object to its initial state
-
-    ```php
-    $parsedFoo->reset();
-    ```
-
-Guide
------
+```php
+$parsedFoo->reset();
+```
 
 ### Compilation
 
@@ -115,19 +113,20 @@ or pass it to the *protoc*:
 
 Put `protoc-php-gen.php` on the *PATH* or pass absolute path to `protoc`.
 
-On Windows use `protoc-gen-php.bat` instead.
+### Package
 
 #### Command line options
+
+#### Generator options
 
 * -o out, --out=out - the destination directory for generated files (defaults to the current directory).
 * -I proto_path, --proto_path=proto_path - the directory in which to search for imports.
 * --protoc=protoc - the protoc compiler executable path.
 * -D define, --define=define - define a generator option (i.e. -Dnamespace='Foo\Bar\Baz').
 
-#### Generator options
 * namespace - the namespace to be used by the generated PHP classes.
 
-### Message class
+### Message interface
 
 The classes generated during the compilation are PSR-0 compliant (each class is put into it's own file). If `namespace` generator option is not defined then a package name (if present) is used to create a namespace. If the package name is not set then a class is put into global space.
 
@@ -149,9 +148,9 @@ For each field a set of accessors is generated. The set of methods is different 
         getCount{FIELD}()           // return number of field values
         getIterator{FIELD}($index)  // return ArrayIterator for field values
 
-{FIELD} is a camel cased field name.
+{FIELD} is camel cased field name.
 
-### Enum
+### Enums
 
 PHP does not natively support enum type. Hence enum is represented by the PHP integer type. For convenience enum is compiled to a class with set of constants corresponding to its possible values.
 
@@ -226,15 +225,19 @@ The `ProtobufMessage` class comes with `dump` method which prints out a message 
 
 Alternatively you can use `printDebugString()` method which produces output in protocol buffers text format.
 
-IDE Helper and Auto-Complete Support
-------------------------------------
+## License and Authors
 
-To integrate this extension with your IDE (PhpStorm, Eclipse etc.) and get auto-complete support, simply include `stubs\ProtobufMessage.php` anywhere under your project root.
+* Author: Hubert Jagodziński (https://github.com/hjagodzinski)
+* Author: Mateusz Gajewski (https://github.com/wendigo)
+* Author: Sergey P (https://github.com/serggp)
+* Author: Christopher Mancini (https://github.com/christophermancini)
 
-References
-----------
+Copyright (c) 2017 Allegro Group (Original Authors)
+Copyright (c) 2017 Basho Technologies, Inc.
 
-* [Protocol Buffers][1]
+Licensed under the Apache License, Version 2.0 (the "License"). For more details, see [License](License).
+
+## References
 
 [1]: http://code.google.com/p/protobuf/ "Protocol Buffers"
 [2]: http://php.net/manual/en/install.pecl.phpize.php
