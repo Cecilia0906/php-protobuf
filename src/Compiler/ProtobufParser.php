@@ -501,7 +501,7 @@ class ProtobufParser
         if ($field->isProtobufScalarType()) {
             return $field->getScalarType();
         } else if ($field->getTypeDescriptor() instanceof EnumDescriptor) {
-            return ProtobufMessage::PB_TYPE_INT;
+            return \ProtobufMessage::PB_TYPE_INT;
         } else {
             return $this->_createClassName($field->getTypeDescriptor());
         }
@@ -749,7 +749,7 @@ class ProtobufParser
             $buffer->append('self::' . $field->getConstName() . ' => array(')->increaseIdentation();
 
             if (!is_null($field->getDefault())) {
-                if ($type == ProtobufMessage::PB_TYPE_STRING) {
+                if ($type == \ProtobufMessage::PB_TYPE_STRING) {
                     $buffer->append('\'default\' => \'' . addslashes($field->getDefault()) . '\', ');
                 } else {
                     if ($field->isProtobufScalarType()) {

@@ -1,6 +1,6 @@
 <?php
 
-die("This is a stub file for IDEs, don't use it directly!");
+die("This is a stub file for IDEs, don't use it directly!\n");
 
 abstract class ProtobufMessage
 {
@@ -12,7 +12,7 @@ abstract class ProtobufMessage
     const PB_TYPE_SIGNED_INT = 6;
     const PB_TYPE_STRING     = 7;
     const PB_TYPE_BOOL       = 8;
-    
+
     protected $values = array();
 
     /**
@@ -23,21 +23,21 @@ abstract class ProtobufMessage
     /**
      * @param int   $position
      * @param mixed $value
-     * 
+     *
      * @return null
      */
     public function append($position, $value) {}
 
     /**
      * @param int $position
-     * 
+     *
      * @return null
      */
     public function clear($position) {}
 
     /**
      * @param bool $onlySet
-     * 
+     *
      * @return null
      */
     public function dump($onlySet = true) {}
@@ -50,7 +50,7 @@ abstract class ProtobufMessage
 
     /**
      * @param int $position
-     * 
+     *
      * @return int
      */
     public function count($position) {}
@@ -65,9 +65,9 @@ abstract class ProtobufMessage
 
     /**
      * @param string $packed
-     * 
+     *
      * @throws Exception
-     * 
+     *
      * @return mixed
      */
     public function parseFromString($packed) {}
@@ -82,7 +82,7 @@ abstract class ProtobufMessage
     /**
      * @param int   $position
      * @param mixed $value
-     * 
+     *
      * @return null
      */
     public function set($position = -1, $value) {}

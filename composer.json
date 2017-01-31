@@ -48,11 +48,7 @@
     "php": ">=5.4"
   },
   "require-dev": {
-<<<<<<< HEAD
     "phpunit/phpunit": "5.7.*",
     "google/protobuf": "v2.6.1"
-=======
-    "phpunit/phpunit": "4.8.*"
->>>>>>> master
   }
 }

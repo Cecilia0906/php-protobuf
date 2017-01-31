@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 
 <?php
-require implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__), 'src', 'ProtobufParser.php'));
+require implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__), 'vendor', 'autoload.php'));
+
+use Basho\Protobuf\Compiler\ProtobufParser;
 
 if (!debug_backtrace()) {
-/*    if (!class_exists('\ProtobufMessage')) {
+    if (!class_exists('\ProtobufMessage')) {
 
         echo $argv[0] .
             ' requires protobuf extension installed to run' .
@@ -12,7 +14,7 @@ if (!debug_backtrace()) {
 
         exit(1);
     }
-*/
+
     $optionError = false;
     $useNamespaces = false;
     $filenamePrefix = false;
