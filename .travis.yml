@@ -7,7 +7,6 @@ before_script:
   - phpenv config-rm xdebug.ini || echo 'xdebug.ini not installed'
   - composer self-update
   - composer install --prefer-source
-  - export TEST_PHP_EXECUTABLE=`which php`
 script:
   - composer test
 env:
