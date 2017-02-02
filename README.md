@@ -1,6 +1,6 @@
 # PHP Protobuf - Google's Protocol Buffers for PHP
 
-[![Packagist](https://img.shields.io/packagist/v/basho/php-protobuf.svg?maxAge=2592000)](https://packagist.org/packages/basho/php-protobuf) [![Build Status](https://secure.travis-ci.org/basho/php-protobuf.png?branch=master)](http://travis-ci.org/basho/php-protobuf)
+[![Packagist](https://img.shields.io/packagist/v/basho/protobuf.svg?maxAge=2592000)](https://packagist.org/packages/basho/protobuf) [![Build Status](https://secure.travis-ci.org/basho/php-protobuf.png?branch=master)](http://travis-ci.org/basho/php-protobuf)
 
 [Protocol Buffers][1] are a way of encoding structured data in an efficient yet extensible format. It might be used in file formats and RPC protocols.
 

@@ -1,6 +1,6 @@
 {
   "name": "basho/protobuf",
-  "description": "Protocol Buffer extension for PHP",
+  "description": "Protocol Buffer support for PHP",
   "type": "library",
   "keywords": [
     "protocol buffers",
