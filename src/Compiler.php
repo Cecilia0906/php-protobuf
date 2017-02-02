@@ -2,6 +2,16 @@
 
 namespace Basho\Protobuf;
 
+use Basho\Protobuf\Compiler\CodeStringBuffer;
+use Basho\Protobuf\Compiler\CommentStringBuffer;
+use Basho\Protobuf\Compiler\DescriptorInterface;
+use Basho\Protobuf\Compiler\EnumDescriptor;
+use Basho\Protobuf\Compiler\EnumValueDescriptor;
+use Basho\Protobuf\Compiler\FieldDescriptor;
+use Basho\Protobuf\Compiler\FieldLabel;
+use Basho\Protobuf\Compiler\FileDescriptor;
+use Basho\Protobuf\Compiler\MessageDescriptor;
+
 /**
  * Parses protobuf file and generates message class
  */
@@ -76,10 +86,10 @@ class Compiler
         $this->verbose = $verbose;
     }
 
-    public function __construct($useNativeNamespaces = null)
+    public function __construct(bool $useNativeNamespaces = false)
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
-        $this->_useNativeNamespaces = (boolean)$useNativeNamespaces;
+        $this->_useNativeNamespaces = $useNativeNamespaces;
     }
 
     /**
@@ -836,7 +846,7 @@ class Compiler
      *
      * @return MessageDescriptor
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function _parseMessageType(FileDescriptor $file, $messageContent, MessageDescriptor $parent = null)
     {
@@ -875,13 +885,13 @@ class Compiler
                 $match = preg_match('/"([^"]+)";*\s?/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
 
                 if (!$match) {
-                    throw new Exception('Malformed include / look at your import statement: ' . $messageContent);
+                    throw new \Exception('Malformed include / look at your import statement: ' . $messageContent);
                 }
 
                 // use dirname to get absolute path in case file parsed is not in cwd
                 $includedFilename = dirname($file->getName()) . DIRECTORY_SEPARATOR . $matches[1][0];
                 if (!file_exists($includedFilename)) {
-                    throw new Exception('Included file ' . $includedFilename . ' does not exist');
+                    throw new \Exception('Included file ' . $includedFilename . ' does not exist');
                 }
 
                 $messageContent = trim(substr($messageContent, $matches[0][1] + strlen($matches[0][0])));
@@ -905,7 +915,7 @@ class Compiler
             } else if (strtolower($next) == 'package') {
                 $match = preg_match('/package[\s]+([^;]+);?/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
                 if (!$match) {
-                    throw new Exception('Malformed package');
+                    throw new \Exception('Malformed package');
                 }
                 $file->setPackage($matches[1][0]);
                 $messageContent = trim(substr($messageContent, $matches[0][1] + strlen($matches[0][0])));
@@ -914,7 +924,7 @@ class Compiler
                 // now a normal field
                 $match = preg_match('/(.*);/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
                 if (!$match || !$parent) {
-                    throw new Exception('Proto file missformed');
+                    throw new \Exception('Proto file missformed');
                 }
 
                 $parent->addField($this->_parseField($matches[0][0]));
@@ -929,7 +939,7 @@ class Compiler
      * @param string $content Protobuf content
      *
      * @return FieldDescriptor
-     * @throws Exception
+     * @throws \Exception
      */
     private function _parseField($content)
     {
@@ -981,7 +991,7 @@ class Compiler
             $field->setName($matches[3]);
             $field->setNumber($matches[4]);
         } else {
-            throw new Exception('Syntax error ' . $content);
+            throw new \Exception('Syntax error ' . $content);
         }
 
         return $field;
@@ -993,7 +1003,7 @@ class Compiler
      * @param MessageDescriptor $descriptor Message descriptor
      * @param FileDescriptor    $file       File descriptor
      *
-     * @throws Exception
+     * @throws \Exception
      * @return null
      */
     private function _resolveMessageFieldTypes(MessageDescriptor $descriptor, FileDescriptor $file)
@@ -1024,7 +1034,7 @@ class Compiler
                     continue;
                 }
 
-                throw new Exception('Type ' . $field->getType() . ' not defined');
+                throw new \Exception('Type ' . $field->getType() . ' not defined');
             } else if ($namespace[0] == '.') {
                 if ($namespace == '.') {
                     $namespace = '';
@@ -1033,11 +1043,11 @@ class Compiler
                 }
 
                 if (!isset($this->_namespaces[$namespace])) {
-                    throw new Exception('Namespace \'' . $namespace . '\' for type ' . $field->getType() . ' not defined');
+                    throw new \Exception('Namespace \'' . $namespace . '\' for type ' . $field->getType() . ' not defined');
                 }
 
                 if (!isset($this->_namespaces[$namespace][$field->getType()])) {
-                    throw new Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
+                    throw new \Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
                 }
 
                 $field->setTypeDescriptor(
@@ -1055,13 +1065,13 @@ class Compiler
                 }
 
                 if (!isset($this->_namespaces[$namespace])) {
-                    throw new Exception('Namespace ' . $namespace . ' for type ' . $field->getType() . ' not defined');
+                    throw new \Exception('Namespace ' . $namespace . ' for type ' . $field->getType() . ' not defined');
                 }
 
                 $exists = isset($this->_namespaces[$namespace][$field->getType()]);
 
                 if (!$exists) {
-                    throw new Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
+                    throw new \Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
                 }
 
                 $field->setTypeDescriptor($this->_namespaces[$namespace][$field->getType()]);
@@ -1110,7 +1120,7 @@ class Compiler
      * @param string         $content Protobuf enum description
      *
      * @return EnumDescriptor
-     * @throws Exception
+     * @throws \Exception
      */
     private function _parseEnum(EnumDescriptor $enum, $content)
     {
@@ -1152,7 +1162,7 @@ class Compiler
      * @param string $charend Ending char
      *
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     private function _getBeginEnd($string, $char, $charend)
     {
@@ -1181,7 +1191,7 @@ class Compiler
         }
 
         if ($offset == -1) {
-            throw new Exception('Protofile failure: ' . $char . ' not nested');
+            throw new \Exception('Protofile failure: ' . $char . ' not nested');
         }
 
         return array('begin' => $offsetBegin, 'end' => $offset);
