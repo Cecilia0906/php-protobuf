@@ -1,5 +1,5 @@
 {
-  "name": "allegro/protobuf",
+  "name": "basho/protobuf",
   "description": "Protocol buffer support for PHP",
   "type": "library",
   "keywords": [
