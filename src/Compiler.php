@@ -1,11 +1,11 @@
 <?php
 
-namespace Basho\Protobuf\Compiler;
+namespace Basho\Protobuf;
 
 /**
  * Parses protobuf file and generates message class
  */
-class ProtobufParser
+class Compiler
 {
     const NAMESPACE_SEPARATOR = '_';
     const NAMESPACE_SEPARATOR_NATIVE = '\\';
@@ -888,7 +888,7 @@ class ProtobufParser
                 $parserKey = realpath($includedFilename);
 
                 if (!isset(self::$_parsers[$parserKey])) {
-                    $pbp = new ProtobufParser($this->_useNativeNamespaces);
+                    $pbp = new self($this->_useNativeNamespaces);
                     // passthrough manually set package
                     $pbp->setPackage($this->getPackage());
                     self::$_parsers[$parserKey] = $pbp;

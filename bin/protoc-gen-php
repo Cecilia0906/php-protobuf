@@ -3,7 +3,7 @@
 <?php
 require implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__), 'vendor', 'autoload.php'));
 
-use Basho\Protobuf\Compiler\ProtobufParser;
+use Basho\Protobuf\Compiler;
 
 if (!debug_backtrace()) {
     if (!class_exists('\ProtobufMessage')) {
@@ -75,7 +75,7 @@ if (!debug_backtrace()) {
         exit(1);
     }
 
-    $parser = new ProtobufParser($useNamespaces);
+    $parser = new Compiler($useNamespaces);
 
     if ($filenamePrefix) {
         $parser->setFilenamePrefix($filenamePrefix);
