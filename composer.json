@@ -12,7 +12,7 @@
     "allegro",
     "basho"
   ],
-  "homepage": "https://github.com/allegro/php-protobuf",
+  "homepage": "https://github.com/basho/php-protobuf",
   "license": "Apache-2.0",
   "bin": ["bin/protoc-gen-php"],
   "autoload": {
