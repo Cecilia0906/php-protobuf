@@ -5,8 +5,10 @@ php:
   - nightly
 before_script:
   - phpenv config-rm xdebug.ini || echo 'xdebug.ini not installed'
+  - if [[ $OPCACHE == 1 ]]; then phpenv config-add .travis.enable-opcache.ini; fi
   - composer self-update
   - composer install --prefer-source
+  - php -i
 script:
   - composer test
 env:
