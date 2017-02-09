@@ -58,7 +58,7 @@
       "make"
     ],
     "clean": "make distclean",
-    "phpt": "TRAVIS=1 php run-tests.php -n -d extension_dir=./modules/ -d extension=protobuf.so -P --show-diff --set-timeout 120",
+    "phpt": "TRAVIS=1 php run-tests.php -n -d extension_dir=./modules/ -d extension=protobuf.so -d opcache.enable=$OPCACHE -d opcache.enable_cli=$OPCACHE -P --show-diff --set-timeout 120",
     "test": [
       "@test-extension",
       "@test-generator"
